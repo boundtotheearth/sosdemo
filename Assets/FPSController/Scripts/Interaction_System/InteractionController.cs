@@ -23,32 +23,47 @@ public class InteractionController : MonoBehaviour
     void Update()
     {
         CheckForInteractable();
-        
-        if(isInteracting)
+
+        if(hoveredInteractable != null)
         {
-            hoveredInteractable.OnInteract();
+            hoveredInteractable.OnHover();
+            if(isInteracting)
+            {
+                hoveredInteractable.OnInteract();
+            }
         }
+        
+        
     }
 
 
     void CheckForInteractable()
     {
-        hoveredInteractable = null;
-
         Ray ray = new Ray(myCamera.transform.position, myCamera.transform.forward);
         RaycastHit hitInfo;
 
-        bool hitSomething = Physics.SphereCast(ray,raySphereRadius, out hitInfo, rayDistance, interactableLayer);
-
+        bool hitSomething = Physics.SphereCast(ray, raySphereRadius, out hitInfo, rayDistance, interactableLayer);
+        bool foundInteractable = false;
         if(hitSomething)
         {
             Interactable interactable = hitInfo.transform.GetComponent<Interactable>();
 
             if(interactable != null)
             {
+                
+                if(interactable != hoveredInteractable)
+                {
+                    interactable.OnHoverStart();
+                }
                 hoveredInteractable = interactable;
-                interactable.OnHover();
+                foundInteractable = true;
             }
+        }
+
+        if(!foundInteractable && hoveredInteractable != null)
+        {
+            hoveredInteractable.OnHoverEnd();
+            hoveredInteractable = null;
         }
 
         Debug.DrawRay(ray.origin, ray.direction * rayDistance, hitSomething ? Color.green : Color.red);
