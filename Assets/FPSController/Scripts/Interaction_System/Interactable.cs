@@ -6,6 +6,13 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     public Material outlineMat;
+    public GameObject UIPrefab;
+
+    // Workaround for prefab self referencing
+    public virtual void Start()
+    {
+        OnHoverEnd();
+    }
 
     public virtual void OnInteractStart()
     {
@@ -20,6 +27,7 @@ public class Interactable : MonoBehaviour
     public virtual void OnInteractEnd()
     {
         Debug.Log("INTERACT END: " + gameObject.name);
+        gameObject.SetActive(false);
     }
 
     public virtual void OnHoverStart()
@@ -27,7 +35,10 @@ public class Interactable : MonoBehaviour
         Debug.Log("HOVER Start: " + gameObject.name);
         Renderer renderer = GetComponent<Renderer>();
         List<Material> materials = renderer.sharedMaterials.ToList();
-        materials.Add(outlineMat);
+        if(!materials.Contains(outlineMat))
+        {
+            materials.Add(outlineMat);
+        }
         renderer.materials = materials.ToArray();
         
     }
@@ -42,7 +53,10 @@ public class Interactable : MonoBehaviour
         Debug.Log("HOVER END: " + gameObject.name);
         Renderer renderer = GetComponent<Renderer>();
         List<Material> materials = renderer.sharedMaterials.ToList();
-        materials.Remove(outlineMat);
+        if(materials.Contains(outlineMat))
+        {
+            materials.Remove(outlineMat);
+        }
         renderer.materials = materials.ToArray();
     }
 }

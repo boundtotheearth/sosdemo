@@ -7,13 +7,14 @@ public class InteractionController : MonoBehaviour
     [SerializeField] private float rayDistance = 0f;
     [SerializeField] private float raySphereRadius = 0f;
     [SerializeField] private LayerMask interactableLayer = ~0;
+    [SerializeField] private InteractionUI interactionUI;
 
 
     private Camera myCamera;
 
     private bool isInteracting = false;
     
-    private Interactable hoveredInteractable = null;
+    [SerializeField] private Interactable hoveredInteractable = null;
 
     void Awake()
     {
@@ -50,15 +51,22 @@ public class InteractionController : MonoBehaviour
 
             if(interactable != null)
             {
-                
+                // Hovering over a new object
                 if(interactable != hoveredInteractable)
                 {
                     interactable.OnHoverStart();
+
+                    // Was already hovering on shomething else
+                    if(hoveredInteractable != null)
+                    {
+                        hoveredInteractable.OnHoverEnd();
+                    }
                 }
+
                 hoveredInteractable = interactable;
                 foundInteractable = true;
             }
-        }
+        } 
 
         if(!foundInteractable && hoveredInteractable != null)
         {
@@ -71,13 +79,20 @@ public class InteractionController : MonoBehaviour
 
     public void OnInteractStart()
     {
-        isInteracting = true;
-        hoveredInteractable.OnInteractStart();
+        if(hoveredInteractable != null)
+        {
+            isInteracting = true;
+            hoveredInteractable.OnInteractStart();
+            interactionUI.SetInteractionObject(hoveredInteractable);
+        }
     }
 
     public void OnInteractEnd()
     {
-        hoveredInteractable.OnInteractEnd();
-        isInteracting = false;
+        if(hoveredInteractable != null)
+        {
+            hoveredInteractable.OnInteractEnd();
+            isInteracting = false;
+        }
     }
 }
