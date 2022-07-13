@@ -7,7 +7,8 @@ public class InteractionController : MonoBehaviour
     [SerializeField] private float rayDistance = 0f;
     [SerializeField] private float raySphereRadius = 0f;
     [SerializeField] private LayerMask interactableLayer = ~0;
-    [SerializeField] private InteractionUI interactionUI;
+    [SerializeField] private ExamineUI examineUI;
+    [SerializeField] private GameManager gameManager;
 
 
     private Camera myCamera;
@@ -83,7 +84,8 @@ public class InteractionController : MonoBehaviour
         {
             isInteracting = true;
             hoveredInteractable.OnInteractStart();
-            interactionUI.SetInteractionObject(hoveredInteractable);
+            examineUI.SetExamineObject(hoveredInteractable.clueData);
+            gameManager.CollectClue(hoveredInteractable.clueData);
         }
     }
 

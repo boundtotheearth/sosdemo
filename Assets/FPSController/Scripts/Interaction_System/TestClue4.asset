@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6236834778f447d18b70ae9ba959965, type: 3}
+  m_Name: TestClue4
+  m_EditorClassIdentifier: 
+  clueName: TestClue4
+  clueDescription: This is a fourth clue for testing.
+  clueImage: {fileID: 2800000, guid: 86c1d68df4b204260b58151353c5d9d4, type: 3}
+  cluePrefab: {fileID: 7688855996708795549, guid: ab9ea5e0a8ca24f11935ec42d65cddcb,
+    type: 3}
+  clueType: 0

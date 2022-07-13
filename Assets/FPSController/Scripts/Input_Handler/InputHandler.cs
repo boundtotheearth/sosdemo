@@ -5,6 +5,7 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private CameraInputData cameraInputData = null;
     [SerializeField] private MovementInputData movementInputData = null;
     [SerializeField] private InteractionController interactionControler = null;
+    [SerializeField] private CluesUI cluesUI = null;
 
     void Start()
     {
@@ -17,6 +18,7 @@ public class InputHandler : MonoBehaviour
         GetCameraInput();
         GetMovementInputData();
         GetInteractionInputData();
+        GetMenuInput();
     }
 
     void GetInteractionInputData()
@@ -57,5 +59,13 @@ public class InputHandler : MonoBehaviour
 
         movementInputData.JumpClicked = Input.GetKeyDown(KeyCode.Space);
         movementInputData.CrouchClicked = Input.GetKeyDown(KeyCode.LeftControl);
+    }
+
+    void GetMenuInput()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            cluesUI.ToggleMenu();
+        }
     }
 }

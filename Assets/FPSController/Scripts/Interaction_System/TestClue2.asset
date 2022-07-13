@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6236834778f447d18b70ae9ba959965, type: 3}
+  m_Name: TestClue2
+  m_EditorClassIdentifier: 
+  clueIndex: 1
+  clueName: TestClue2
+  clueDescription: This is a second clue for testing.
+  clueImage: {fileID: 2800000, guid: 38a08531dd44849ddad3ed8a1e15609b, type: 3}
+  cluePrefab: {fileID: 7688855996708795549, guid: b13cf9f6eed2c4f348b7369ac0c9fab6,
+    type: 3}
+  clueType: 0

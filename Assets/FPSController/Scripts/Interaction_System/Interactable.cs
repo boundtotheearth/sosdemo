@@ -6,7 +6,8 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     public Material outlineMat;
-    public GameObject UIPrefab;
+    public ClueData clueData;
+    public bool canTake;
 
     // Workaround for prefab self referencing
     public virtual void Start()
@@ -27,7 +28,10 @@ public class Interactable : MonoBehaviour
     public virtual void OnInteractEnd()
     {
         Debug.Log("INTERACT END: " + gameObject.name);
-        gameObject.SetActive(false);
+        if(canTake)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public virtual void OnHoverStart()

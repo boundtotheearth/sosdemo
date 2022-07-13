@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMat: {fileID: 2100000, guid: 19d1e01ddd7f4466aac148e78d36b6da, type: 2}
-  UIPrefab: {fileID: 7688855996708795549}
+  clueData: {fileID: 11400000, guid: e3665bfc00cff4585ba193606ee1c871, type: 2}
+  canTake: 1
 --- !u!136 &7688855996708795542
 CapsuleCollider:
   m_ObjectHideFlags: 0
