@@ -17,21 +17,18 @@ public class ExamineUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            ClearExamineObject();
-        }
+        
     }
 
     public void SetExamineObject(ClueData clueData) {
-        GameObject uiPrefab = Instantiate(clueData.cluePrefab, objectPivot.position, objectPivot.rotation, objectPivot) as GameObject;
-        currentObject = uiPrefab;
+        // GameObject uiPrefab = Instantiate(clueData.cluePrefab, objectPivot.position, objectPivot.rotation, objectPivot) as GameObject;
+        // currentObject = uiPrefab;
         gameObject.SetActive(true);
     }
 
     public void ClearExamineObject() {
-        Destroy(currentObject);
-        currentObject = null;
+        // Destroy(currentObject);
+        // currentObject = null;
         gameObject.SetActive(false);
     }
 }

@@ -7,30 +7,37 @@ public class InputHandler : MonoBehaviour
     [SerializeField] private InteractionController interactionControler = null;
     [SerializeField] private CluesUI cluesUI = null;
 
+    [SerializeField] private bool canMove = true;
+    [SerializeField] private bool canLook = true;
+    [SerializeField] private bool canInteract = true;
+    [SerializeField] private bool canMenu = true;
+
     void Start()
     {
-        cameraInputData.ResetInput();
-        movementInputData.ResetInput();
+        ResetInput();
     }
 
     void Update()
     {
-        GetCameraInput();
-        GetMovementInputData();
-        GetInteractionInputData();
-        GetMenuInput();
+        if(canLook) {
+            GetCameraInput();
+        }
+        if(canMove) {
+            GetMovementInputData();
+        }
+        if(canInteract) {
+            GetInteractionInputData();
+        }
+        if(canMenu) {
+            GetMenuInput();
+        }
     }
 
     void GetInteractionInputData()
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            interactionControler.OnInteractStart();
-        }
-
-        if(Input.GetKeyUp(KeyCode.E))
-        {
-            interactionControler.OnInteractEnd();
+            interactionControler.ToggleInteract();
         }
     }
 
@@ -67,5 +74,50 @@ public class InputHandler : MonoBehaviour
         {
             cluesUI.ToggleMenu();
         }
+    }
+
+    public void ResetInput() {
+        cameraInputData.ResetInput();
+        movementInputData.ResetInput();
+    }
+
+    public void DisableMovementInput() {
+        ResetInput();
+        canMove = false;
+    }
+
+    public void DisableCameraInput() {
+        ResetInput();
+        canLook = false;
+    }
+
+    public void DisableInteractionInput() {
+        ResetInput();
+        canInteract = false;
+    }
+
+    public void DisableMenuInput() {
+        ResetInput();
+        canMenu = false;
+    }
+
+    public void EnableMovementInput() {
+        ResetInput();
+        canMove = true;
+    }
+
+    public void EnableCameraInput() {
+        ResetInput();
+        canLook = true;
+    }
+
+    public void EnableInteractionInput() {
+        ResetInput();
+        canInteract = true;
+    }
+
+    public void EnableMenuInput() {
+        ResetInput();
+        canMenu = true;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class MouseRotate : MonoBehaviour
 {
     public float sensitivity = 1f;
+    public Camera myCamera;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,8 +17,10 @@ public class MouseRotate : MonoBehaviour
     {
         if(Input.GetMouseButton(0))
         {
-            Vector3 mouseInput = new Vector3(Input.GetAxis("Mouse Y"), -Input.GetAxis("Mouse X"), 0);
-            transform.Rotate(mouseInput * sensitivity, Space.World);
+            Vector2 mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * sensitivity;
+
+            transform.RotateAround(transform.position, myCamera.transform.right, mouseInput.y);
+            transform.RotateAround(transform.position, myCamera.transform.up, -mouseInput.x);
         }
     }
 }

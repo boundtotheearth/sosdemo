@@ -13,9 +13,13 @@ public class InteractionController : MonoBehaviour
 
     private Camera myCamera;
 
-    private bool isInteracting = false;
+    [SerializeField] private bool isInteracting = false;
     
     [SerializeField] private Interactable hoveredInteractable = null;
+    [SerializeField] private Interactable interactingObject = null;
+    [SerializeField] private GameObject examineObject = null;
+    [SerializeField] private Transform focusPoint;
+    public float focusSpeed = 10f;
 
     void Awake()
     {
@@ -78,23 +82,80 @@ public class InteractionController : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * rayDistance, hitSomething ? Color.green : Color.red);
     }
 
-    public void OnInteractStart()
+    public void ToggleInteract() {
+        if(!isInteracting) {
+            OnInteractStart();
+        } else {
+            OnInteractEnd();
+        }
+    }
+
+    private void OnInteractStart()
     {
         if(hoveredInteractable != null)
         {
             isInteracting = true;
-            hoveredInteractable.OnInteractStart();
-            examineUI.SetExamineObject(hoveredInteractable.clueData);
-            gameManager.CollectClue(hoveredInteractable.clueData);
+            interactingObject = hoveredInteractable;
+            interactingObject.OnInteractStart();
+            examineUI.SetExamineObject(interactingObject.clueData);
+            gameManager.CollectClue(interactingObject.clueData);
+            GetComponent<InputHandler>().DisableCameraInput();
+            GetComponent<InputHandler>().DisableMovementInput();
+            examineObject = Instantiate(interactingObject.clueData.cluePrefab, interactingObject.transform.position, interactingObject.transform.rotation, focusPoint.transform) as GameObject;
+            StartCoroutine(FocusObject());
+            interactingObject.gameObject.SetActive(false);
         }
     }
 
-    public void OnInteractEnd()
+    private void OnInteractEnd()
     {
-        if(hoveredInteractable != null)
+        if(interactingObject != null)
         {
-            hoveredInteractable.OnInteractEnd();
+            interactingObject.OnInteractEnd();
             isInteracting = false;
+            examineUI.SetExamineObject(interactingObject.clueData);
+            GetComponent<InputHandler>().EnableCameraInput();
+            GetComponent<InputHandler>().EnableMovementInput();
+            StartCoroutine(UnfocusObject());
         }
+    }
+
+    public IEnumerator FocusObject() 
+    {
+        float interp = 0;
+        for(;;)
+        {
+            Debug.Log(interp);
+            if(interp < 1f) {
+                interp += Time.deltaTime * focusSpeed;
+            } else {
+                break;
+            }
+            examineObject.transform.position = Vector3.Lerp(interactingObject.transform.position, focusPoint.position, interp);
+            examineObject.transform.rotation = Quaternion.Lerp(interactingObject.transform.rotation, focusPoint.rotation, interp);
+            yield return null;
+        }
+    }
+
+    public IEnumerator UnfocusObject()
+    {
+        float interp = 0;
+        Vector3 initialPos = examineObject.transform.position;
+        Quaternion initialRot = examineObject.transform.rotation;
+        for(;;)
+        {
+            if(interp < 1f) {
+                interp += Time.deltaTime * focusSpeed;
+            } else {
+                break;
+            }
+            examineObject.transform.position = Vector3.Lerp(initialPos, interactingObject.transform.position, interp);
+            examineObject.transform.rotation = Quaternion.Lerp(initialRot, interactingObject.transform.rotation, interp);
+            yield return null;
+        }
+
+        interactingObject.gameObject.SetActive(true);
+        Destroy(examineObject);
+        examineObject = null;
     }
 }
